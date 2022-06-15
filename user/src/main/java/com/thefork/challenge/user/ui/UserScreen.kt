@@ -16,12 +16,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.coil.rememberCoilPainter
 import com.thefork.challenge.api.UserFull
 import com.thefork.challenge.user.R
+import com.thefork.challenge.user.theme.TheForkTheme
 import com.thefork.challenge.user.viewmodels.UserViewModel
 import retrofit2.Response
 
@@ -54,8 +56,8 @@ fun UserScreen(
             if (userResponse == null) {
                 LoadingView(modifier = Modifier.fillMaxSize())
             } else {
-                if (userResponse!!.isSuccessful) {
-                    val response = userResponse!!.body()
+                if (userResponse?.isSuccessful == true) {
+                    val response = userResponse?.body()
 
                     Box() {
                         Image(
@@ -140,11 +142,11 @@ fun UserScreen(
                         )
                     }
                 } else {
-                    NoUserView()
+                    NoUserView(modifier = Modifier.padding(60.dp))
                 }
             }
         } else {
-            NoUserView()
+            NoUserView(modifier = Modifier.padding(60.dp))
         }
     }
 

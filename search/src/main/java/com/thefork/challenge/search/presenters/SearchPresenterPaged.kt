@@ -13,7 +13,6 @@ import javax.inject.Inject
 class SearchPresenterPaged @Inject constructor(
     private val usersPagingSource: UsersPagingSource,
 ) : ViewModel(), SearchContract.SearchPresenterPaged {
-    //TODO use Lifecycle aware component or a separated real ViewModel?
 
     private var view: SearchContract.SearchViewPaged? = null
 

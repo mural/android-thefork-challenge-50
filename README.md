@@ -24,26 +24,30 @@ Can you give him feedback on the architecture of his project ?
 You should point out the good things and the issues you found (at least 3 of each).
 
 **Good things :**
-- ...
-- ...
-- ...
+- Modularized app. with no dependencies between features
+- Coroutines to control Main and Background threads  
+- API with Retrofit
+- MVP pattern applied
 
 **Issues :**
-- ...
-- ...
-- ...
-- ...
-- ...
+- No interface for the View on the Presenter
+- No dependency injection, all components are created on the actual classes, that increases the coupling
+- Presenter it's not saving the current state nor it's android lifecycle aware, so that can lead to leaked resources, also there is no process cancellation.
+- Direct access to API in the Presenter, no extra repository layer to enhance decoupling
+- View controlling the navigation and using reflection
 
 ### 2nd - Unit tests:
 
 He never did any test, and he’s stuck with his `SearchPresenter`.  
 Help him improve that class so that it’s testable and write the tests for him.
-NB : Do not migrate this SearchPresenter to any other pattern (MVVM, etc), just make it testable and test it 
+NB : Do not migrate this SearchPresenter to any other pattern (MVVM, etc), just make it testable and test it
+
+> Mainly I introduce dependency injection to avoid the initialization on the code, so that's is delegated and can be injected with mocks for testing.
+The Presenter is inheriting jetpack ViewModel now but that doesn't change the MVP pattern (the name is a bit misleading), the ViewModel class is just is to store and manage UI-related data in a lifecycle conscious way (as Android docs says :) )
 
 ### 3rd - New activity implementation:
 
-Now, you must help him finish the app by 
+Now, you must help him finish the app by
 - coding the `UserActivity.kt`
 - plugging it to the `SearchActivity.kt` (you can use his navigation function`navigateToUser`).  
 Don't hesitate to apply the advices you gave him in question #1
@@ -52,8 +56,10 @@ Here is a example of what it could look like
 
 ![Screenshot](user_page.png)
 
-Don't forget to look at the [API](https://dummyapi.io/explorer) 
+Don't forget to look at the [API](https://dummyapi.io/explorer)
 If you feel brave you can also try to use [Compose](https://developer.android.com/jetpack/compose) for the view.
+
+- Compose was used for the views and MVVM with live data for the model, there is a loading view and basic error handling
 
 
 ### 4th - Navigation:
@@ -62,10 +68,18 @@ As you can see, `UserActivity.kt` is opened using reflection (especially the cla
 Neige would like to improve the navigation but he doesn't want to create a dependency between `search` & `user`.
 
 Can you explain why ?
-> ...Your answer...
+> Best to avoid reflection because is not checked on compiled time, so no warnings or any other IDE or automatic code checks, also performance is slower
+Then keep `search` & `user` with no dependencies enhances testing, reutilization and compiler times
 
 Could you suggest a solution and even **implement** it ?
-> ...Your suggested solution...
+> In this case I created a :common module (can also be just a :navigation one) to store an interface called UserScreenRouteContract (you can create as many as you need for different routes), then that interface is implemented only in the module who has that destination (in this case the User module) and via dependency injection be available to every module that needs it without the need to include that module on the dependencies. On the project I used a simple function to send some data and a Activity as Context, but that can be improved based on the project needs, and for example send a navigation_graph to use jetpack navigation
+
+### 5th - Pagination:
+
+- I added pagination using the paging library with a PagingSource, in this case is there is no local storage but it can be changed with a RemoteMediator if there is any local storage such a database
+- I created a different Activity: SearchActivityPaged to do this, so the original one is present on the project with the modifications from the previous points, on the AndroidManifest.xml (inside the :app module) you can choose to init SearchActivityPaged (with pagination) or SearchActivity (the original one)
+
+Misc.: there are 2 screenshots: 'Screenshot_***' on the root folder
 
 ### Congrats !!
 

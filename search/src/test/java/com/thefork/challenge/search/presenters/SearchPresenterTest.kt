@@ -1,10 +1,9 @@
-package com.thefork.challenge.search
+package com.thefork.challenge.search.presenters
 
 import com.thefork.challenge.api.Api
 import com.thefork.challenge.api.Page
 import com.thefork.challenge.api.UserPreview
-import com.thefork.challenge.search.presenters.SearchContract
-import com.thefork.challenge.search.presenters.SearchPresenter
+import com.thefork.challenge.search.CoroutineTestRule
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

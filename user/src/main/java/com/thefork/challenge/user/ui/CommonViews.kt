@@ -31,8 +31,8 @@ fun TitleAndText(title: String, text: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun NoUserView() {
-    Text(text = "No user data", modifier = Modifier.padding(8.dp))
+fun NoUserView(modifier: Modifier = Modifier) {
+    Text(text = "No user data", modifier = modifier.padding(8.dp))
 }
 
 @Composable

@@ -17,7 +17,6 @@ class SearchPresenter @Inject constructor(
     @MainDispatcher private val dispatcherMain: CoroutineDispatcher,
     @IoDispatcher private val dispatcherIO: CoroutineDispatcher
 ) : ViewModel(), SearchContract.SearchPresenter {
-    // TODO use Lifecycle aware component or a separated real ViewModel?
 
     private var view: SearchContract.SearchView? = null
 

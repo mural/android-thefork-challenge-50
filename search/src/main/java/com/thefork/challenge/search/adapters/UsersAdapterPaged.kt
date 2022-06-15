@@ -20,7 +20,7 @@ class UsersAdapterPaged(
 
     override fun onBindViewHolder(holder: UsersViewHolder, position: Int) {
         holder.itemView.findViewById<TextView>(R.id.last_name_text_view).text =
-            getItem(position)!!.firstName
+            getItem(position)?.firstName
 
         with(holder) {
             getItem(position)?.let { user ->

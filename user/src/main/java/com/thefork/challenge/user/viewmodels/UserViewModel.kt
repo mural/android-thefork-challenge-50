@@ -12,6 +12,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.MediaType
+import okhttp3.ResponseBody
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -29,7 +31,13 @@ class UserViewModel @Inject constructor(
         viewModelScope.launch {
             withContext(dispatcherMain) {
                 _response.value =
-                    withContext(dispatcherIO) { api.userService.getFullUser(id = userId) }
+                    withContext(dispatcherIO) {
+                        try {
+                            api.userService.getFullUser(id = userId)
+                        } catch (e: Exception) {
+                            Response.error(400, ResponseBody.create(MediaType.parse(""), ""))
+                        }
+                    }
             }
         }
     }
