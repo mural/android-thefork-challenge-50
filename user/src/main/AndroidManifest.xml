@@ -4,7 +4,7 @@
 
     <application>
 
-        <activity android:name="com.thefork.challenge.user.UserActivity" />
+        <activity android:name=".UserActivity" />
 
     </application>
 

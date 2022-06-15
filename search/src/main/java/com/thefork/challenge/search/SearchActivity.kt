@@ -1,35 +1,63 @@
 package com.thefork.challenge.search
 
-import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
+import androidx.paging.PagingData
 import com.google.android.material.snackbar.Snackbar
+import com.mural.common.UserScreenRouteContract
 import com.thefork.challenge.api.UserPreview
+import com.thefork.challenge.search.databinding.ActivitySearchBinding
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class SearchActivity : AppCompatActivity() {
+
+@AndroidEntryPoint
+class SearchActivity : AppCompatActivity(), OnItemClickListener, SearchContract.SearchView {
+
+    private lateinit var binding: ActivitySearchBinding
+    private val searchPresenter: SearchPresenter by viewModels()
+
+    @Inject
+    lateinit var userScreenRouteContract: UserScreenRouteContract
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+        binding = ActivitySearchBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
-        SearchPresenter().init(this)
+        searchPresenter.attach(this)
+
+        searchPresenter.getUsers()
     }
 
-    fun displayUsers(users: List<UserPreview>) {
-        findViewById<RecyclerView>(R.id.recycler_view).adapter = UsersAdapter(users)
+    override fun displayUsers(users: List<UserPreview>) {
+        val adapter = UsersAdapter(users, this)
+        binding.recyclerView.adapter = adapter
     }
 
-    fun displayError() {
+    override fun displayUsersPaged(users: Flow<PagingData<UserPreview>>) {
+    }
+
+    override fun displayError() {
         Snackbar
-            .make(findViewById(R.id.recycler_view), R.string.error, Snackbar.LENGTH_LONG)
+            .make(binding.recyclerView, R.string.error, Snackbar.LENGTH_LONG)
             .show()
     }
 
-    fun navigateToUser(user: UserPreview) {
-        startActivity(Intent().apply {
-            setClassName("com.thefork.challenge", "com.thefork.challenge.user.UserActivity")
-            putExtra("USER_ID", user.id)
-        })
+    private fun navigateToUser(user: UserPreview) {
+        userScreenRouteContract.show(user.id, this)
     }
+
+    override fun onItemClicked(user: UserPreview) {
+        navigateToUser(user)
+    }
+
+    override fun onDestroy() {
+        searchPresenter.detach()
+        super.onDestroy()
+    }
+
 }

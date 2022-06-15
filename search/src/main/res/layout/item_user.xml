@@ -9,11 +9,15 @@
         android:id="@+id/last_name_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="8dp" />
+        android:paddingBottom="8dp"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/first_name_text_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:paddingBottom="4dp"
+        android:textSize="14sp" />
 
 </LinearLayout>

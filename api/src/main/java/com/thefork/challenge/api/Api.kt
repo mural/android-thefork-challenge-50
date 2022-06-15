@@ -2,8 +2,9 @@ package com.thefork.challenge.api
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
 
-class Api {
+class Api @Inject constructor() {
 
     val userService: UserService
 

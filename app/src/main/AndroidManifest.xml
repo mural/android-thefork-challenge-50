@@ -5,10 +5,11 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".TheForkApplication"
         android:label="@string/app_name"
         android:theme="@style/Theme.AppCompat">
 
-        <activity android:name=".search.SearchActivity">
+        <activity android:name=".search.SearchActivityPaged" android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

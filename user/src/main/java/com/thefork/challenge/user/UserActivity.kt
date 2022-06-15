@@ -1,13 +1,24 @@
 package com.thefork.challenge.user
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import com.thefork.challenge.user.UserScreenRouteImpl.Companion.USER_ID
+import com.thefork.challenge.user.theme.TheForkTheme
+import dagger.hilt.android.AndroidEntryPoint
 
-class UserActivity : AppCompatActivity() {
+@AndroidEntryPoint
+class UserActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_user)
-    }
 
+        val userId = intent.getStringExtra(USER_ID)
+        setContent {
+            TheForkTheme {
+                val navigateUp = this::finish
+                UserScreen(userId = userId, navigateUp = navigateUp)
+            }
+        }
+    }
 }

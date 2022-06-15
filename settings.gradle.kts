@@ -11,4 +11,5 @@ include(
     ":api",
     ":search",
     ":user",
+    ":common",
 )

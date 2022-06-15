@@ -6,6 +6,9 @@
 
         <activity android:name=".SearchActivity" />
 
+        <activity android:name=".SearchActivityPaged" />
+<!--     TODO : keep just one   -->
+
     </application>
 
 </manifest>

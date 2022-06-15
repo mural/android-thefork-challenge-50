@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="error_generic">Something went wrong</string>
+
+    <string name="no_image">No image</string>
+    <string name="retry">Retry</string>
+
+</resources>
