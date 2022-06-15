@@ -3,23 +3,26 @@ package com.thefork.challenge.search
 import com.thefork.challenge.api.Api
 import com.thefork.challenge.api.Page
 import com.thefork.challenge.api.UserPreview
+import com.thefork.challenge.search.presenters.SearchContract
+import com.thefork.challenge.search.presenters.SearchPresenter
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.MediaType
 import okhttp3.ResponseBody
-import org.junit.*
+import org.junit.After
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
 import retrofit2.Response
 
 
 class SearchPresenterTest {
 
-    //    private var view = mockk<SearchContract.SearchView>()
-    private lateinit var view: SearchContract.SearchView
     private var api = mockk<Api>()
+    private lateinit var view: SearchContract.SearchView
     private lateinit var presenter: SearchPresenter
-//    private var presenter = spyk<SearchContr
 
     @ExperimentalCoroutinesApi
     @get:Rule
@@ -35,8 +38,6 @@ class SearchPresenterTest {
                 dispatcherMain = coroutinesTestRule.testDispatcher,
                 dispatcherIO = coroutinesTestRule.testDispatcher
             )
-//        presenter = spyk(SearchPresenter(api = api, dispatcherMain = dispatcherMain, dispatcherIO = dispatcherIO))
-
         presenter.attach(view)
     }
 
@@ -55,7 +56,7 @@ class SearchPresenterTest {
                 picture = "some Url"
             )
             val users = listOf(user1)
-            usersResponse = Response.success(Page(data = users, total = 1u))
+            usersResponse = Response.success(Page(data = users, page = 1u, total = 1u))
 
             coEvery { api.userService.getUsers(any()) } returns usersResponse
 

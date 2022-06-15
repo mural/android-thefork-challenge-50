@@ -1,4 +1,4 @@
-package com.thefork.challenge.user
+package com.thefork.challenge.user.ui
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -21,10 +21,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.coil.rememberCoilPainter
 import com.thefork.challenge.api.UserFull
-import com.thefork.challenge.user.ui.FadingTopBar
-import com.thefork.challenge.user.ui.LoadingView
-import com.thefork.challenge.user.ui.NoUserView
-import com.thefork.challenge.user.ui.TitleAndText
+import com.thefork.challenge.user.R
+import com.thefork.challenge.user.viewmodels.UserViewModel
 import retrofit2.Response
 
 @Composable

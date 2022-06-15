@@ -1,7 +1,7 @@
 package com.thefork.challenge.user.module
 
-import com.mural.common.UserScreenRouteContract
-import com.thefork.challenge.user.UserScreenRouteImpl
+import com.thefork.challenge.routes.UserScreenRouteContract
+import com.thefork.challenge.user.router.UserScreenRouteImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

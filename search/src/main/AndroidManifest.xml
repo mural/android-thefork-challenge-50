@@ -5,9 +5,10 @@
     <application>
 
         <activity android:name=".SearchActivity" />
+        <!--   Original one     -->
 
         <activity android:name=".SearchActivityPaged" />
-<!--     TODO : keep just one   -->
+        <!--   This one uses paging library for 'infinite scroll'     -->
 
     </application>
 

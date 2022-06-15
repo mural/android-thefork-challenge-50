@@ -3,8 +3,9 @@ package com.thefork.challenge.user
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.thefork.challenge.user.UserScreenRouteImpl.Companion.USER_ID
+import com.thefork.challenge.user.router.UserScreenRouteImpl.Companion.USER_ID
 import com.thefork.challenge.user.theme.TheForkTheme
+import com.thefork.challenge.user.ui.UserScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

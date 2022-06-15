@@ -1,4 +1,4 @@
-package com.thefork.challenge.search
+package com.thefork.challenge.search.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

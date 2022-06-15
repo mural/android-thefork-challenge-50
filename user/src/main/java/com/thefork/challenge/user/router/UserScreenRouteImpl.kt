@@ -1,8 +1,9 @@
-package com.thefork.challenge.user
+package com.thefork.challenge.user.router
 
 import android.app.Activity
 import android.content.Intent
-import com.mural.common.UserScreenRouteContract
+import com.thefork.challenge.routes.UserScreenRouteContract
+import com.thefork.challenge.user.UserActivity
 
 class UserScreenRouteImpl : UserScreenRouteContract {
 

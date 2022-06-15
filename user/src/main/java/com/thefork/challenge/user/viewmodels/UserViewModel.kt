@@ -1,13 +1,13 @@
-package com.thefork.challenge.user
+package com.thefork.challenge.user.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mural.common.module.IoDispatcher
-import com.mural.common.module.MainDispatcher
 import com.thefork.challenge.api.Api
 import com.thefork.challenge.api.UserFull
+import com.thefork.challenge.module.IoDispatcher
+import com.thefork.challenge.module.MainDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
@@ -28,7 +28,8 @@ class UserViewModel @Inject constructor(
     fun getFullUser(userId: String) {
         viewModelScope.launch {
             withContext(dispatcherMain) {
-                _response.value = withContext(dispatcherIO) { api.userService.getFullUser(id = userId) }
+                _response.value =
+                    withContext(dispatcherIO) { api.userService.getFullUser(id = userId) }
             }
         }
     }

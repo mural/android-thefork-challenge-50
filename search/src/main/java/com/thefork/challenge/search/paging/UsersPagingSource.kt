@@ -1,4 +1,4 @@
-package com.thefork.challenge.search
+package com.thefork.challenge.search.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
@@ -16,10 +16,18 @@ class UsersPagingSource @Inject constructor(
             val nextPage = params.key ?: 1
             val response = api.userService.getUsers(page = nextPage.toUInt())
 
+            val data = response.body()?.data ?: listOf()
+            val currentPage = response.body()?.page?.toInt() ?: 0
+            val totalPages = response.body()?.total?.toInt() ?: 0
+
             LoadResult.Page(
-                data = response.body()?.data!!, //TODO check also for NextKey !
+                data = data,
                 prevKey = if (nextPage == 1) null else nextPage - 1,
-                nextKey = if (response.body()?.page!!.toInt() < response.body()?.total!!.toInt() && response.body()?.data!!.isNotEmpty()) { response.body()?.page!!.toInt() + 1 } else { null }
+                nextKey = if (currentPage < totalPages && data.isNotEmpty()) {
+                    currentPage + 1
+                } else {
+                    null
+                }
             )
         } catch (e: Exception) {
             LoadResult.Error(e)

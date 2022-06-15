@@ -20,7 +20,12 @@ import com.thefork.challenge.user.theme.TheForkTheme
 @Composable
 fun TitleAndText(title: String, text: String, modifier: Modifier = Modifier) {
     Column(modifier = modifier.padding(12.dp)) {
-        Text(text = title, fontWeight = FontWeight.Bold, fontSize = 16.sp, modifier = Modifier.padding(bottom = 4.dp))
+        Text(
+            text = title,
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp,
+            modifier = Modifier.padding(bottom = 4.dp)
+        )
         Text(text = text, fontSize = 20.sp, modifier = Modifier.padding(bottom = 2.dp))
     }
 }

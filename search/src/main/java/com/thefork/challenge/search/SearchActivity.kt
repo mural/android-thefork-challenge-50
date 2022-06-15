@@ -3,15 +3,16 @@ package com.thefork.challenge.search
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.paging.PagingData
 import com.google.android.material.snackbar.Snackbar
-import com.mural.common.UserScreenRouteContract
 import com.thefork.challenge.api.UserPreview
+import com.thefork.challenge.routes.UserScreenRouteContract
+import com.thefork.challenge.search.adapters.OnItemClickListener
+import com.thefork.challenge.search.adapters.UsersAdapter
 import com.thefork.challenge.search.databinding.ActivitySearchBinding
+import com.thefork.challenge.search.presenters.SearchContract
+import com.thefork.challenge.search.presenters.SearchPresenter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
-
 
 @AndroidEntryPoint
 class SearchActivity : AppCompatActivity(), OnItemClickListener, SearchContract.SearchView {
@@ -36,9 +37,6 @@ class SearchActivity : AppCompatActivity(), OnItemClickListener, SearchContract.
     override fun displayUsers(users: List<UserPreview>) {
         val adapter = UsersAdapter(users, this)
         binding.recyclerView.adapter = adapter
-    }
-
-    override fun displayUsersPaged(users: Flow<PagingData<UserPreview>>) {
     }
 
     override fun displayError() {

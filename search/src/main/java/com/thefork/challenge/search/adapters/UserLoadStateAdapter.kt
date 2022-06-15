@@ -1,4 +1,4 @@
-package com.thefork.challenge.search
+package com.thefork.challenge.search.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.thefork.challenge.search.R
 
 class UserLoadStateAdapter(
     private val retry: () -> Unit
@@ -41,5 +42,5 @@ class UserLoadStateAdapter(
         )
     }
 
-    class LoadStateViewHolder(private val view: View) : RecyclerView.ViewHolder(view)
+    class LoadStateViewHolder(view: View) : RecyclerView.ViewHolder(view)
 }

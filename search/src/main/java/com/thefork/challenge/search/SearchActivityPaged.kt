@@ -6,23 +6,27 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagingData
 import com.google.android.material.snackbar.Snackbar
-import com.mural.common.UserScreenRouteContract
+import com.thefork.challenge.routes.UserScreenRouteContract
 import com.thefork.challenge.api.UserPreview
+import com.thefork.challenge.search.adapters.OnItemClickListenerPaged
+import com.thefork.challenge.search.adapters.UserLoadStateAdapter
+import com.thefork.challenge.search.adapters.UsersAdapterPaged
 import com.thefork.challenge.search.databinding.ActivitySearchBinding
+import com.thefork.challenge.search.presenters.SearchContract
+import com.thefork.challenge.search.presenters.SearchPresenterPaged
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 @AndroidEntryPoint
 class SearchActivityPaged : AppCompatActivity(), OnItemClickListenerPaged,
-    SearchContract.SearchView {
+    SearchContract.SearchViewPaged {
 
     private lateinit var binding: ActivitySearchBinding
     private lateinit var usersAdapter: UsersAdapterPaged
-    private val searchPresenter: SearchPresenter by viewModels()
+    private val searchPresenterPaged: SearchPresenterPaged by viewModels()
 
     @Inject
     lateinit var userScreenRouteContract: UserScreenRouteContract
@@ -33,8 +37,7 @@ class SearchActivityPaged : AppCompatActivity(), OnItemClickListenerPaged,
         val view = binding.root
         setContentView(view)
 
-        searchPresenter.attach(this)
-        //TODO use live data?
+        searchPresenterPaged.attach(this)
 
         usersAdapter = UsersAdapterPaged(this)
 
@@ -45,10 +48,7 @@ class SearchActivityPaged : AppCompatActivity(), OnItemClickListenerPaged,
             )
         }
 
-        searchPresenter.getUsersPaged()
-    }
-
-    override fun displayUsers(users: List<UserPreview>) {
+        searchPresenterPaged.getUsersPaged()
     }
 
     override fun displayUsersPaged(users: Flow<PagingData<UserPreview>>) {
@@ -74,7 +74,7 @@ class SearchActivityPaged : AppCompatActivity(), OnItemClickListenerPaged,
     }
 
     override fun onDestroy() {
-        searchPresenter.detach()
+        searchPresenterPaged.detach()
         super.onDestroy()
     }
 }

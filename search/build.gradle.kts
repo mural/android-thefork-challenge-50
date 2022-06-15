@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
-
 plugins {
     id("com.android.library")
     id("kotlin-android")
@@ -33,15 +31,15 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.42")
     kapt("com.google.dagger:hilt-android-compiler:2.42")
 
-    implementation ("androidx.activity:activity-ktx:1.4.0")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1")
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
+    implementation("androidx.activity:activity-ktx:1.4.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
 
     testImplementation("junit:junit:4.13.2")
-    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
-    testImplementation ("io.mockk:mockk:1.12.4")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
+    testImplementation("io.mockk:mockk:1.12.4")
 
-    implementation ("androidx.paging:paging-runtime:$pagingVersion")
+    implementation("androidx.paging:paging-runtime:$pagingVersion")
 
     implementation(project(":common"))
     implementation(project(":api"))

@@ -1,4 +1,4 @@
-package com.mural.common.module
+package com.thefork.challenge.module
 
 import dagger.Module
 import dagger.Provides
