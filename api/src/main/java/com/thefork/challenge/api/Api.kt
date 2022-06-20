@@ -6,15 +6,22 @@ import javax.inject.Inject
 
 class Api @Inject constructor() {
 
-    val userService: UserService
+    companion object {
+        const val BASE_URL = "https://dummyapi.io/data/v1/"
+    }
 
-    init {
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://dummyapi.io/data/v1/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+    private var retrofit: Retrofit = Retrofit.Builder().baseUrl(BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+        set(value) {
+            field = value
+            userService = createUserService()
+        }
 
-        userService = retrofit.create(UserService::class.java)
+    var userService: UserService = createUserService()
+
+    private fun createUserService(): UserService {
+        return retrofit.create(UserService::class.java)
     }
 
 }
