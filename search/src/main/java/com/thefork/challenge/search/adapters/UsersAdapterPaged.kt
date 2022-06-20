@@ -2,12 +2,10 @@ package com.thefork.challenge.search.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.thefork.challenge.domain.User
-import com.thefork.challenge.search.R
 import com.thefork.challenge.search.databinding.ItemUserBinding
 
 interface OnItemClickListenerPaged {
@@ -19,14 +17,11 @@ class UsersAdapterPaged(
 ) : PagingDataAdapter<User, UsersAdapterPaged.UsersViewHolder>(UsersComparator) {
 
     override fun onBindViewHolder(holder: UsersViewHolder, position: Int) {
-        holder.itemView.findViewById<TextView>(R.id.last_name_text_view).text =
-            getItem(position)?.firstName
-
         with(holder) {
             getItem(position)?.let { user ->
                 binding.lastNameTextView.text = user.lastName
                 binding.firstNameTextView.text = user.firstName
-                this.itemView.setOnClickListener {
+                itemView.setOnClickListener {
                     itemClickListener.onItemClicked(user)
                 }
             }

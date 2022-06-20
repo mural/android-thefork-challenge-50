@@ -18,6 +18,7 @@ import javax.inject.Inject
 class SearchActivity : AppCompatActivity(), OnItemClickListener, SearchContract.SearchView {
 
     private lateinit var binding: ActivitySearchBinding
+    private lateinit var usersAdapter: UsersAdapter
     private val searchPresenter: SearchPresenter by viewModels()
 
     @Inject
@@ -30,13 +31,11 @@ class SearchActivity : AppCompatActivity(), OnItemClickListener, SearchContract.
         setContentView(view)
 
         searchPresenter.attach(this)
-
-        searchPresenter.getUsers()
     }
 
     override fun displayUsers(users: List<User>) {
-        val adapter = UsersAdapter(users, this)
-        binding.recyclerView.adapter = adapter
+        usersAdapter = UsersAdapter(users, this)
+        binding.recyclerView.adapter = usersAdapter
     }
 
     override fun displayError() {

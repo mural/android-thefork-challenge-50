@@ -38,6 +38,7 @@ class SearchPresenter @Inject constructor(
 
     override fun attach(view: SearchContract.SearchView) {
         this.view = view
+        getUsers()
     }
 
     override fun detach() {
