@@ -3,6 +3,8 @@ package com.thefork.challenge.search.presenters
 import com.thefork.challenge.api.Api
 import com.thefork.challenge.api.Page
 import com.thefork.challenge.api.UserPreview
+import com.thefork.challenge.api.toDomain
+import com.thefork.challenge.domain.User
 import com.thefork.challenge.search.CoroutineTestRule
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -45,24 +47,26 @@ class SearchPresenterTest {
     fun `get users successfully and display those`() {
         coroutinesTestRule.testDispatcher.run() {
 
-            val usersResponse: Response<Page<UserPreview>>
-
-            val user1 = UserPreview(
+            val usersApiResponse: Response<Page<UserPreview>>
+            val user1Api = UserPreview(
                 id = "id.1",
                 title = "mrs",
                 firstName = "First",
                 lastName = "User",
                 picture = "some Url"
             )
-            val users = listOf(user1)
-            usersResponse = Response.success(Page(data = users, page = 1u, total = 1u))
+            val usersApi = listOf(user1Api)
+            usersApiResponse = Response.success(Page(data = usersApi, page = 1u, total = 1u))
 
-            coEvery { api.userService.getUsers(any()) } returns usersResponse
+            val user1Domain = user1Api.toDomain()
+            val usersDomain = listOf(user1Domain)
+
+            coEvery { api.userService.getUsers(1u) } returns usersApiResponse
 
             presenter.getUsers()
 
-            coVerify(exactly = 1) { api.userService.getUsers(any()) }
-            coVerify(exactly = 1) { view.displayUsers(any()) }
+            coVerify(exactly = 1) { api.userService.getUsers(1u) }
+            coVerify(exactly = 1) { view.displayUsers(usersDomain) }
             coVerify(exactly = 0) { view.displayError() }
         }
     }
@@ -74,12 +78,11 @@ class SearchPresenterTest {
 
             val usersResponse: Response<Page<UserPreview>> =
                 Response.error(400, ResponseBody.create(MediaType.parse(""), ""))
-            coEvery { api.userService.getUsers(any()) } returns usersResponse
+            coEvery { api.userService.getUsers(1u) } returns usersResponse
 
             presenter.getUsers()
 
-            coVerify(exactly = 1) { api.userService.getUsers(any()) }
-            coVerify(exactly = 0) { view.displayUsers(any()) }
+            coVerify(exactly = 1) { api.userService.getUsers(1u) }
             coVerify(exactly = 1) { view.displayError() }
         }
     }

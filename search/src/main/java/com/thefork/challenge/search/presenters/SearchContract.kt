@@ -1,7 +1,7 @@
 package com.thefork.challenge.search.presenters
 
 import androidx.paging.PagingData
-import com.thefork.challenge.api.UserPreview
+import com.thefork.challenge.domain.User
 import com.thefork.challenge.search.BaseContract
 import kotlinx.coroutines.flow.Flow
 
@@ -14,12 +14,12 @@ interface SearchContract : BaseContract {
 
     interface SearchView : SearchViewBase {
 
-        fun displayUsers(users: List<UserPreview>)
+        fun displayUsers(users: List<User>)
     }
 
     interface SearchViewPaged : SearchViewBase {
 
-        fun displayUsersPaged(users: Flow<PagingData<UserPreview>>)
+        fun displayUsersPaged(users: Flow<PagingData<User>>)
     }
 
     interface SearchPresenter : BaseContract.Presenter<SearchView> {

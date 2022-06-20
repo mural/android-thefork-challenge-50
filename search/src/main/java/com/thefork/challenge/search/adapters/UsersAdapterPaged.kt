@@ -6,17 +6,17 @@ import android.widget.TextView
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.thefork.challenge.api.UserPreview
+import com.thefork.challenge.domain.User
 import com.thefork.challenge.search.R
 import com.thefork.challenge.search.databinding.ItemUserBinding
 
 interface OnItemClickListenerPaged {
-    fun onItemClicked(user: UserPreview)
+    fun onItemClicked(user: User)
 }
 
 class UsersAdapterPaged(
     private val itemClickListener: OnItemClickListenerPaged
-) : PagingDataAdapter<UserPreview, UsersAdapterPaged.UsersViewHolder>(UsersComparator) {
+) : PagingDataAdapter<User, UsersAdapterPaged.UsersViewHolder>(UsersComparator) {
 
     override fun onBindViewHolder(holder: UsersViewHolder, position: Int) {
         holder.itemView.findViewById<TextView>(R.id.last_name_text_view).text =
@@ -41,13 +41,13 @@ class UsersAdapterPaged(
 
     class UsersViewHolder(val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root)
 
-    object UsersComparator : DiffUtil.ItemCallback<UserPreview>() {
-        override fun areItemsTheSame(oldItem: UserPreview, newItem: UserPreview): Boolean {
+    object UsersComparator : DiffUtil.ItemCallback<User>() {
+        override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
             // Id is unique.
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: UserPreview, newItem: UserPreview): Boolean {
+        override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
             return oldItem == newItem
         }
     }

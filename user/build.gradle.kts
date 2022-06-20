@@ -56,6 +56,7 @@ dependencies {
 
     implementation(project(":common"))
     implementation(project(":api"))
+    implementation(project(":domain"))
 }
 
 // Allow references to generated code

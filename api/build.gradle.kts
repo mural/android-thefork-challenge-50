@@ -7,4 +7,6 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     implementation("javax.inject:javax.inject:1")
+
+    implementation(project(":domain"))
 }

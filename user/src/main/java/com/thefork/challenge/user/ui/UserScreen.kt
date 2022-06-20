@@ -7,29 +7,23 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.coil.rememberCoilPainter
-import com.thefork.challenge.api.UserFull
+import com.thefork.challenge.domain.LoadStatus
+import com.thefork.challenge.domain.User
 import com.thefork.challenge.user.R
-import com.thefork.challenge.user.theme.TheForkTheme
-import com.thefork.challenge.user.viewmodels.UserViewModel
-import retrofit2.Response
 
 @Composable
 fun UserScreen(
-    userId: String?,
+    loadStatus: State<LoadStatus<User>>,
     navigateUp: () -> Unit
 ) {
     val scrollState = rememberScrollState()
@@ -45,109 +39,98 @@ fun UserScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        if (!userId.isNullOrBlank()) {
-            val userViewModel: UserViewModel = hiltViewModel()
-            val userResponse: Response<UserFull>? by userViewModel.response.observeAsState(null)
-
-            LaunchedEffect(Unit) {
-                userViewModel.getFullUser(userId)
-            }
-
-            if (userResponse == null) {
+        when (loadStatus.value) {
+            is LoadStatus.Loading -> {
                 LoadingView(modifier = Modifier.fillMaxSize())
-            } else {
-                if (userResponse?.isSuccessful == true) {
-                    val response = userResponse?.body()
-
-                    Box() {
-                        Image(
-                            painter = rememberCoilPainter(
-                                request = randomPictureURL,
-                                fadeIn = true
-                            ),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clip(shape = RoundedCornerShape(0.dp)),
-                            contentScale = ContentScale.FillBounds
-                        )
-
-                        Box(
-                            Modifier
-                                .align(Alignment.TopCenter)
-                                .padding(top = 80.dp)
-                        ) {
-                            response?.picture?.let {
-                                if (response.lastName.isNotBlank()) {
-                                    val imageLoaded = rememberCoilPainter(
-                                        request = it,
-                                        fadeIn = true
-                                    )
-                                    Image(
-                                        painter = imageLoaded,
-                                        contentDescription = null,
-                                        modifier = Modifier
-                                            .size(140.dp)
-                                            .clip(shape = CircleShape)
-                                            .border(2.dp, Color.White, CircleShape),
-                                        contentScale = ContentScale.Crop
-                                    )
-                                } else {
-                                    Text(text = stringResource(id = R.string.no_image))
-                                }
-                            } ?: Text(text = stringResource(id = R.string.no_image))
-                        }
-                    }
-
-                    Text(
-                        text = "${response?.title} ${response?.firstName} ${response?.lastName}",
-                        modifier = Modifier.padding(8.dp), fontSize = 28.sp
+            }
+            is LoadStatus.Success -> {
+                val user = loadStatus.value.data
+                Box() {
+                    Image(
+                        painter = rememberCoilPainter(
+                            request = randomPictureURL,
+                            fadeIn = true
+                        ),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(shape = RoundedCornerShape(0.dp)),
+                        contentScale = ContentScale.FillBounds
                     )
 
-                    Column(
-                        modifier = Modifier
-                            .padding(top = 34.dp)
-                            .fillMaxWidth()
-                            .verticalScroll(state = scrollState)
-                            .background(Color.White),
-                        horizontalAlignment = Alignment.Start
+                    Box(
+                        Modifier
+                            .align(Alignment.TopCenter)
+                            .padding(top = 80.dp)
                     ) {
-                        Text(
-                            text = "Information",
-                            modifier = Modifier.padding(8.dp),
-                            fontSize = 24.sp
-                        )
-                        Divider(modifier = Modifier.padding(bottom = 8.dp))
-                        TitleAndText(title = "Email", text = response?.email ?: notAvailable)
-                        TitleAndText(title = "Phone", text = response?.phone ?: notAvailable)
-                        TitleAndText(
-                            title = "Birthday",
-                            text = response?.dateOfBirth ?: notAvailable
-                        )
-                        TitleAndText(
-                            title = "Registered on",
-                            text = response?.registerDate ?: notAvailable
-                        )
-                        TitleAndText(
-                            title = "Country",
-                            text = response?.location?.country ?: notAvailable
-                        )
-                        TitleAndText(
-                            title = "City",
-                            text = response?.location?.city ?: notAvailable
-                        )
-                        TitleAndText(
-                            title = "Timezone",
-                            text = response?.location?.timezone ?: notAvailable
-                        )
+                        user?.picture?.let {
+                            val imageLoaded = rememberCoilPainter(
+                                request = it,
+                                fadeIn = true
+                            )
+                            Image(
+                                painter = imageLoaded,
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(140.dp)
+                                    .clip(shape = CircleShape)
+                                    .border(2.dp, Color.White, CircleShape),
+                                contentScale = ContentScale.Crop
+                            )
+                        } ?: run {
+                            Text(text = stringResource(id = R.string.no_image))
+                        }
                     }
-                } else {
-                    NoUserView(modifier = Modifier.padding(60.dp))
+                }
+
+                Text(
+                    text = "${user?.title} ${user?.firstName} ${user?.lastName}",
+                    modifier = Modifier.padding(8.dp), fontSize = 28.sp
+                )
+
+                Column(
+                    modifier = Modifier
+                        .padding(top = 34.dp)
+                        .fillMaxWidth()
+                        .verticalScroll(state = scrollState)
+                        .background(Color.White),
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    Text(
+                        text = "Information",
+                        modifier = Modifier.padding(8.dp),
+                        fontSize = 24.sp
+                    )
+                    Divider(modifier = Modifier.padding(bottom = 8.dp))
+                    TitleAndText(title = "Email", text = user?.email ?: notAvailable)
+                    TitleAndText(title = "Phone", text = user?.phone ?: notAvailable)
+                    TitleAndText(
+                        title = "Birthday",
+                        text = user?.dateOfBirth ?: notAvailable
+                    )
+                    TitleAndText(
+                        title = "Registered on",
+                        text = user?.registerDate ?: notAvailable
+                    )
+                    TitleAndText(
+                        title = "Country",
+                        text = user?.location?.country ?: notAvailable
+                    )
+                    TitleAndText(
+                        title = "City",
+                        text = user?.location?.city ?: notAvailable
+                    )
+                    TitleAndText(
+                        title = "Timezone",
+                        text = user?.location?.timezone ?: notAvailable
+                    )
                 }
             }
-        } else {
-            NoUserView(modifier = Modifier.padding(60.dp))
+            is LoadStatus.Error -> {
+                NoUserView(modifier = Modifier.padding(60.dp))
+            }
         }
+
     }
 
     FadingTopBar(

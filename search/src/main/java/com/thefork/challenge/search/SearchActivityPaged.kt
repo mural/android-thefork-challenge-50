@@ -6,8 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagingData
 import com.google.android.material.snackbar.Snackbar
+import com.thefork.challenge.domain.User
 import com.thefork.challenge.routes.UserScreenRouteContract
-import com.thefork.challenge.api.UserPreview
 import com.thefork.challenge.search.adapters.OnItemClickListenerPaged
 import com.thefork.challenge.search.adapters.UserLoadStateAdapter
 import com.thefork.challenge.search.adapters.UsersAdapterPaged
@@ -37,10 +37,7 @@ class SearchActivityPaged : AppCompatActivity(), OnItemClickListenerPaged,
         val view = binding.root
         setContentView(view)
 
-        searchPresenterPaged.attach(this)
-
         usersAdapter = UsersAdapterPaged(this)
-
         binding.recyclerView.apply {
             setHasFixedSize(true)
             adapter = usersAdapter.withLoadStateFooter(
@@ -48,10 +45,10 @@ class SearchActivityPaged : AppCompatActivity(), OnItemClickListenerPaged,
             )
         }
 
-        searchPresenterPaged.getUsersPaged()
+        searchPresenterPaged.attach(this)
     }
 
-    override fun displayUsersPaged(users: Flow<PagingData<UserPreview>>) {
+    override fun displayUsersPaged(users: Flow<PagingData<User>>) {
         lifecycleScope.launch {
             users.collectLatest {
                 usersAdapter.submitData(it)
@@ -65,11 +62,11 @@ class SearchActivityPaged : AppCompatActivity(), OnItemClickListenerPaged,
             .show()
     }
 
-    private fun navigateToUser(user: UserPreview) {
+    private fun navigateToUser(user: User) {
         userScreenRouteContract.show(user.id, this)
     }
 
-    override fun onItemClicked(user: UserPreview) {
+    override fun onItemClicked(user: User) {
         navigateToUser(user)
     }
 

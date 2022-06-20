@@ -1,5 +1,8 @@
 package com.thefork.challenge.api
 
+import com.thefork.challenge.domain.User
+import com.thefork.challenge.domain.UserLocation
+
 data class UserFull(
     val id: String,
     val title: String,
@@ -11,16 +14,42 @@ data class UserFull(
     val registerDate: String,
     val phone: String,
     val picture: String,
-    val location: Location
+    val location: UserFullLocation
 )
 
-data class Location(
+data class UserFullLocation(
     val street: String,
     val city: String,
     val state: String,
     val country: String,
     val timezone: String
 )
+
+fun UserFull.toDomain(): User {
+    return User(
+        id = id,
+        title = title,
+        firstName = firstName,
+        lastName = lastName,
+        gender = gender,
+        email = email,
+        dateOfBirth = dateOfBirth,
+        registerDate = registerDate,
+        phone = phone,
+        picture = picture,
+        location = location.toDomain()
+    )
+}
+
+fun UserFullLocation.toDomain(): UserLocation {
+    return UserLocation(
+        street = street,
+        city = city,
+        state = state,
+        country = country,
+        timezone = timezone
+    )
+}
 
 //Full user data returned by id.
 //{

@@ -13,3 +13,4 @@ include(
     ":user",
     ":common",
 )
+include(":domain")

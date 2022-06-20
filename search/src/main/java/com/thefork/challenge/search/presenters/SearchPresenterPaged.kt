@@ -27,6 +27,7 @@ class SearchPresenterPaged @Inject constructor(
 
     override fun attach(view: SearchContract.SearchViewPaged) {
         this.view = view
+        getUsersPaged()
     }
 
     override fun detach() {

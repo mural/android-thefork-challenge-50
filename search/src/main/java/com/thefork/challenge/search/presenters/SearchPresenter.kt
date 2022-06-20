@@ -3,6 +3,7 @@ package com.thefork.challenge.search.presenters
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.thefork.challenge.api.Api
+import com.thefork.challenge.api.toDomain
 import com.thefork.challenge.module.IoDispatcher
 import com.thefork.challenge.module.MainDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,7 +28,7 @@ class SearchPresenter @Inject constructor(
             }
             withContext(dispatcherMain) {
                 if (response.isSuccessful) {
-                    view?.displayUsers(response.body()?.data ?: listOf())
+                    view?.displayUsers(response.body()?.data?.map { it.toDomain() } ?: listOf())
                 } else {
                     view?.displayError()
                 }

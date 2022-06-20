@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
-import com.thefork.challenge.api.UserPreview
+import com.thefork.challenge.domain.User
 import com.thefork.challenge.routes.UserScreenRouteContract
 import com.thefork.challenge.search.adapters.OnItemClickListener
 import com.thefork.challenge.search.adapters.UsersAdapter
@@ -34,7 +34,7 @@ class SearchActivity : AppCompatActivity(), OnItemClickListener, SearchContract.
         searchPresenter.getUsers()
     }
 
-    override fun displayUsers(users: List<UserPreview>) {
+    override fun displayUsers(users: List<User>) {
         val adapter = UsersAdapter(users, this)
         binding.recyclerView.adapter = adapter
     }
@@ -45,11 +45,11 @@ class SearchActivity : AppCompatActivity(), OnItemClickListener, SearchContract.
             .show()
     }
 
-    private fun navigateToUser(user: UserPreview) {
+    private fun navigateToUser(user: User) {
         userScreenRouteContract.show(user.id, this)
     }
 
-    override fun onItemClicked(user: UserPreview) {
+    override fun onItemClicked(user: User) {
         navigateToUser(user)
     }
 
