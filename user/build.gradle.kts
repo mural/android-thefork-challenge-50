@@ -33,6 +33,7 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.4.0")
     implementation("androidx.compose.material:material:$composeVersion")
     implementation("androidx.compose.ui:ui:$composeVersion")
+    debugImplementation ("androidx.compose.ui:ui-tooling:$composeVersion")
     implementation("androidx.compose.ui:ui-tooling:$composeVersion")
     implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
     implementation("androidx.compose.runtime:runtime:$composeVersion")
@@ -53,6 +54,11 @@ dependencies {
 
     //Coil (Images)
     implementation("com.google.accompanist:accompanist-coil:0.12.0")
+
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
+    testImplementation("io.mockk:mockk:1.12.4")
+    testImplementation ("androidx.arch.core:core-testing:2.1.0")
 
     implementation(project(":common"))
     implementation(project(":api"))

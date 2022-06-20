@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.livedata.observeAsState
 import com.thefork.challenge.domain.LoadStatus
 import com.thefork.challenge.user.router.UserScreenRouteImpl.Companion.USER_ID
@@ -20,17 +21,18 @@ class UserActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val userId = intent.getStringExtra(USER_ID)
-        userViewModel.init(userId!!) //TODO ver estados!
-
         setContent {
+            val scrollState = rememberScrollState()
             TheForkTheme {
                 val navigateUp = this::finish
                 UserScreen(
-                    userViewModel.response.observeAsState(LoadStatus.Loading()),
+                    loadStatus = userViewModel.response.observeAsState(LoadStatus.Loading()),
+                    scrollState = scrollState,
                     navigateUp = navigateUp
                 )
             }
         }
+        val userId = intent.getStringExtra(USER_ID)
+        userViewModel.init(userId)
     }
 }
