@@ -8,8 +8,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,7 +26,7 @@ import com.thefork.challenge.user.theme.TheForkTheme
 
 @Composable
 fun UserScreen(
-    loadStatus: State<LoadStatus<User>>,
+    loadStatus: LoadStatus<User>,
     scrollState: ScrollState,
     navigateUp: () -> Unit
 ) {
@@ -45,12 +43,12 @@ fun UserScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        when (loadStatus.value) {
+        when (loadStatus) {
             is LoadStatus.Loading -> {
                 LoadingView(modifier = Modifier.fillMaxSize())
             }
             is LoadStatus.Success -> {
-                val user = loadStatus.value.data
+                val user = loadStatus.data
                 Box() {
                     Image(
                         painter = rememberCoilPainter(
@@ -153,7 +151,7 @@ fun UserScreen(
 fun UserScreenDefaultPreview() {
     TheForkTheme {
         UserScreen(
-            loadStatus = mutableStateOf(LoadStatus.Loading()),
+            loadStatus = LoadStatus.Loading(),
             scrollState = rememberScrollState(),
             navigateUp = {}
         )

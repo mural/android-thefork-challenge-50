@@ -26,7 +26,7 @@ class UserActivity : ComponentActivity() {
             TheForkTheme {
                 val navigateUp = this::finish
                 UserScreen(
-                    loadStatus = userViewModel.response.observeAsState(LoadStatus.Loading()),
+                    loadStatus = userViewModel.response.observeAsState(LoadStatus.Loading()).value,
                     scrollState = scrollState,
                     navigateUp = navigateUp
                 )
